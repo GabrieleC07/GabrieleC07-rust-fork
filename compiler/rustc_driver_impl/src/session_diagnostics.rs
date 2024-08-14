@@ -91,5 +91,12 @@ pub(crate) struct IceFlags {
 }
 
 #[derive(Diagnostic)]
+#[diag(driver_impl_arg_expand_all_failed_to_load_argument_file)]
+pub(crate) struct FailedToLoadArgFiles {
+    pub err: String
+}
+
+
+#[derive(Diagnostic)]
 #[diag(driver_impl_ice_exclude_cargo_defaults)]
 pub(crate) struct IceExcludeCargoDefaults;

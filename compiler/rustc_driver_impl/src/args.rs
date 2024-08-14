@@ -98,7 +98,6 @@ impl Expander {
 /// **Note:** This function doesn't interpret argument 0 in any special way.
 /// If this function is intended to be used with command line arguments,
 /// `argv[0]` must be removed prior to calling it manually.
-#[allow(rustc::untranslatable_diagnostic)] // FIXME: make this translatable
 pub fn arg_expand_all(
     early_dcx: &EarlyDiagCtxt,
     at_args: &[String],
@@ -107,7 +106,10 @@ pub fn arg_expand_all(
     let mut result = Ok(());
     for arg in at_args {
         if let Err(err) = expander.arg(arg) {
-            result = Err(early_dcx.early_err(format!("failed to load argument file: {err}")));
+            let err_msg = crate::session_diagnostics::FailedToLoadArgFiles {
+                err: err.to_string()
+            };
+            result = Err(early_dcx.early_err(err_msg));
         }
     }
     result.map(|()| expander.finish())
